@@ -1,0 +1,14 @@
+{
+  "name": "bot1",
+  "version": "1.0.0",
+  "description": "CREACION DE BOT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Victor73i",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.5.3"
+  }
+}
