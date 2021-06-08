@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const config= require("./config.json");
-const client= new Discord.Client()
+const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
+
 
 //cuando este el cliente operativo realizo estas acciones
 
@@ -46,13 +47,13 @@ client.on('message', message =>{
             const reaction = collected.first();
     
             if (reaction.emoji.name === '👍') {
-                message.reply('you reacted with a thumbs up.');
+                message.reply('tu reaccionaste a pulgar arriba');
             } else {
-                message.reply('you reacted with a thumbs down.');
+                message.reply('tu reaccionaste a pulgar abajo');
             }
         })
         .catch(collected => {
-            message.reply('you reacted with neither a thumbs up, nor a thumbs down.');
+            message.reply('REACCIONA A UN EMOJIN HDP');
         });
  }
 if (message.content === '!fruits') {
@@ -76,7 +77,23 @@ if (message.content === '!frui') {
 }
 });
 
-
+client.on('messageReactionAdd', async (reaction, user) => {
+	// When a reaction is received, check if the structure is partial
+	if (reaction.partial) {
+		// If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
+		try {
+			await reaction.fetch();
+		} catch (error) {
+			console.error('Something went wrong when fetching the message: ', error);
+			// Return as `reaction.message.author` may be undefined/null
+			return;
+		}
+	}
+	// Now the message has been cached and is fully available
+	console.log(`${reaction.message.author}'s message "${reaction.message.content}" gained a reaction!`);
+	// The reaction is now also fully available and the properties will be reflected accurately:
+	console.log(`${reaction.count} user(s) have given the same reaction to this message!`);
+});
 
 
 client.login(config.BOT_TOKEN)
